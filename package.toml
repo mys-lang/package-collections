@@ -3,3 +3,6 @@ name = "collections"
 version = "0.1.0"
 authors = ["Erik Moqvist <erik.moqvist@gmail.com>"]
 description = "Various common data structures."
+
+[dependencies]
+string = "latest"

@@ -1,3 +1,5 @@
+from string import StringBuilder
+
 class FifoError(Error):
     message: string
 
@@ -67,6 +69,23 @@ class Fifo:
 
         return item
 
+    def __str__(self) -> string:
+        builder = StringBuilder()
+        builder += "Fifo(items=["
+
+        for offset in range(i64(self._read_length)):
+            index = self._read_index + u64(offset)
+            index %= len(self._items)
+
+            if offset != 0:
+                builder += ", "
+
+            builder += str(self._items[index])
+
+        builder += "])"
+
+        return builder.to_string()
+
 @test
 def test_fifo():
     fifo = Fifo[string](10)
@@ -114,3 +133,17 @@ def test_fifo():
     for i in range(10):
         assert fifo.pop() == str(i)
         assert len(fifo) == u64(9 - i)
+
+@test
+def test_str():
+    fifo = Fifo[bytes](10)
+    assert str(fifo) == "Fifo(items=[])"
+
+    fifo.push(b"\x31")
+    fifo.push(None)
+    fifo.push(b"\x33")
+    assert str(fifo) == "Fifo(items=[b\"\\x31\", None, b\"\\x33\"])"
+
+    fifo.pop()
+    fifo.pop()
+    assert str(fifo) == "Fifo(items=[b\"\\x33\"])"
