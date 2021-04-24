@@ -136,14 +136,14 @@ def test_fifo():
 
 @test
 def test_str():
-    fifo = Fifo[bytes](10)
+    fifo = Fifo[string](10)
     assert str(fifo) == "Fifo(items=[])"
 
-    fifo.push(b"\x31")
+    fifo.push("1")
     fifo.push(None)
-    fifo.push(b"\x33")
-    assert str(fifo) == "Fifo(items=[b\"\\x31\", None, b\"\\x33\"])"
+    fifo.push("2")
+    assert str(fifo) == "Fifo(items=[\"1\", None, \"2\"])"
 
     fifo.pop()
     fifo.pop()
-    assert str(fifo) == "Fifo(items=[b\"\\x33\"])"
+    assert str(fifo) == "Fifo(items=[\"2\"])"
