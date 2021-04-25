@@ -13,7 +13,7 @@ class Fifo:
     _read_length: u64
     _items: [T]
 
-    def __init__(self, capacity: u64 = 25):
+    def __init__(self, capacity: u64):
         self._read_index = 0
         self._read_length = 0
         self._items = []
@@ -147,3 +147,9 @@ def test_str():
     fifo.pop()
     fifo.pop()
     assert str(fifo) == "Fifo(items=[\"2\"])"
+
+@test
+def test_capacity_zero():
+    fifo = Fifo[bytes](0)
+    assert fifo.is_empty()
+    assert fifo.is_full()
