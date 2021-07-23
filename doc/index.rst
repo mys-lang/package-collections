@@ -7,8 +7,8 @@ Various common data structures in the `Mys programming language`_.
 
 Project: https://github.com/mys-lang/package-collections
 
-Functions and types
-===================
+API
+===
 
 .. mysfile:: src/fifo.mys
 
