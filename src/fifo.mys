@@ -48,7 +48,7 @@ class Fifo:
         """
 
         if self.is_full():
-            raise FifoError("cannot push from full fifo")
+            raise FifoError("cannot push to full fifo")
 
         write_index = (self._read_index + self._read_length) % len(self._items)
         self._items[write_index] = item
@@ -96,8 +96,8 @@ def test_fifo():
     try:
         message = ""
         fifo.pop()
-    except FifoError as e:
-        message = e.message
+    except FifoError as error:
+        message = error.message
 
     assert message == "cannot pop from empty fifo"
 
@@ -107,8 +107,8 @@ def test_fifo():
     try:
         message = ""
         fifo.pop()
-    except FifoError as e:
-        message = e.message
+    except FifoError as error:
+        message = error.message
 
     assert message == "cannot pop from empty fifo"
 
@@ -121,10 +121,10 @@ def test_fifo():
     try:
         message = ""
         fifo.push("11")
-    except FifoError as e:
-        message = e.message
+    except FifoError as error:
+        message = error.message
 
-    assert message == "cannot push from full fifo"
+    assert message == "cannot push to full fifo"
 
     assert len(fifo) == 10
     assert fifo.is_full()
