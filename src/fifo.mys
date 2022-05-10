@@ -13,7 +13,7 @@ class Fifo:
     _read_length: u64
     _items: [T]
 
-    def __init__(self, capacity: u64):
+    func __init__(self, capacity: u64):
         self._read_index = 0
         self._read_length = 0
         self._items = []
@@ -21,28 +21,28 @@ class Fifo:
         for _ in range(i64(capacity)):
             self._items.append(default(T))
 
-    def __len__(self) -> u64:
+    func __len__(self) -> u64:
         """Returns the number of items in the fifo.
 
         """
 
         return self._read_length
 
-    def is_full(self) -> bool:
+    func is_full(self) -> bool:
         """Returns True if the fifo is full, False otherwise.
 
         """
 
         return self._read_length == len(self._items)
 
-    def is_empty(self) -> bool:
+    func is_empty(self) -> bool:
         """Returns True if the fifo is empty, False otherwise.
 
         """
 
         return self._read_length == 0
 
-    def push(self, item: T):
+    func push(self, item: T):
         """Push an item on the fifo.
 
         """
@@ -54,7 +54,7 @@ class Fifo:
         self._items[write_index] = item
         self._read_length += 1
 
-    def pop(self) -> T:
+    func pop(self) -> T:
         """Pop an item from the fifo.
 
         """
@@ -69,7 +69,7 @@ class Fifo:
 
         return item
 
-    def __str__(self) -> string:
+    func __str__(self) -> string:
         builder = StringBuilder()
         builder += "Fifo(items=["
 
@@ -87,7 +87,7 @@ class Fifo:
         return builder.to_string()
 
 @test
-def test_fifo():
+func test_fifo():
     fifo = Fifo[string](10)
     assert len(fifo) == 0
     assert fifo.is_empty()
@@ -135,7 +135,7 @@ def test_fifo():
         assert len(fifo) == u64(9 - i)
 
 @test
-def test_str():
+func test_str():
     fifo = Fifo[string](10)
     assert str(fifo) == "Fifo(items=[])"
 
@@ -149,13 +149,13 @@ def test_str():
     assert str(fifo) == "Fifo(items=[\"2\"])"
 
 @test
-def test_capacity_zero():
+func test_capacity_zero():
     fifo = Fifo[bytes](0)
     assert fifo.is_empty()
     assert fifo.is_full()
 
 @test
-def test_i32():
+func test_i32():
     fifo = Fifo[i32](1)
     fifo.push(5)
     assert fifo.pop() == 5
