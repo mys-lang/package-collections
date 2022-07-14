@@ -86,8 +86,7 @@ class Fifo:
 
         return builder.to_string()
 
-@test
-func test_fifo():
+test fifo():
     fifo = Fifo[string](10)
     assert len(fifo) == 0
     assert fifo.is_empty()
@@ -134,8 +133,7 @@ func test_fifo():
         assert fifo.pop() == str(i)
         assert len(fifo) == u64(9 - i)
 
-@test
-func test_str():
+test str():
     fifo = Fifo[string](10)
     assert str(fifo) == "Fifo(items=[])"
 
@@ -148,14 +146,12 @@ func test_str():
     fifo.pop()
     assert str(fifo) == "Fifo(items=[\"2\"])"
 
-@test
-func test_capacity_zero():
+test capacity_zero():
     fifo = Fifo[bytes](0)
     assert fifo.is_empty()
     assert fifo.is_full()
 
-@test
-func test_i32():
+test i32():
     fifo = Fifo[i32](1)
     fifo.push(5)
     assert fifo.pop() == 5
