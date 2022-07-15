@@ -9,19 +9,19 @@ class Fifo:
 
     """
 
-    _read_index: u64
-    _read_length: u64
+    _read_index: i64
+    _read_length: i64
     _items: [T]
 
-    func __init__(self, capacity: u64):
+    func __init__(self, capacity: i64):
         self._read_index = 0
         self._read_length = 0
         self._items = []
 
-        for _ in range(i64(capacity)):
+        for _ in range(capacity):
             self._items.append(default(T))
 
-    func __len__(self) -> u64:
+    func length(self) -> i64:
         """Returns the number of items in the fifo.
 
         """
@@ -33,7 +33,7 @@ class Fifo:
 
         """
 
-        return self._read_length == len(self._items)
+        return self._read_length == self._items.length()
 
     func is_empty(self) -> bool:
         """Returns True if the fifo is empty, False otherwise.
@@ -50,7 +50,7 @@ class Fifo:
         if self.is_full():
             raise FifoError("cannot push to full fifo")
 
-        write_index = (self._read_index + self._read_length) % len(self._items)
+        write_index = (self._read_index + self._read_length) % self._items.length()
         self._items[write_index] = item
         self._read_length += 1
 
@@ -64,7 +64,7 @@ class Fifo:
 
         item = self._items[self._read_index]
         self._read_index += 1
-        self._read_index %= len(self._items)
+        self._read_index %= self._items.length()
         self._read_length -= 1
 
         return item
@@ -74,8 +74,8 @@ class Fifo:
         builder += "Fifo(items=["
 
         for offset in range(i64(self._read_length)):
-            index = self._read_index + u64(offset)
-            index %= len(self._items)
+            index = self._read_index + offset
+            index %= self._items.length()
 
             if offset != 0:
                 builder += ", "
@@ -88,7 +88,7 @@ class Fifo:
 
 test fifo():
     fifo = Fifo[string](10)
-    assert len(fifo) == 0
+    assert fifo.length() == 0
     assert fifo.is_empty()
     assert not fifo.is_full()
 
@@ -114,7 +114,7 @@ test fifo():
     for i in range(10):
         assert not fifo.is_full()
         fifo.push(str(i))
-        assert len(fifo) == u64(i + 1)
+        assert fifo.length() == i + 1
         assert not fifo.is_empty()
 
     try:
@@ -125,13 +125,13 @@ test fifo():
 
     assert message == "cannot push to full fifo"
 
-    assert len(fifo) == 10
+    assert fifo.length() == 10
     assert fifo.is_full()
     assert not fifo.is_empty()
 
     for i in range(10):
         assert fifo.pop() == str(i)
-        assert len(fifo) == u64(9 - i)
+        assert fifo.length() == 9 - i
 
 test str():
     fifo = Fifo[string](10)
